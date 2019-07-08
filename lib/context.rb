@@ -1,6 +1,7 @@
+require "thread_parent"
 require "context/version"
+require "context/context"
 
 module Context
-  class Error < StandardError; end
-  # Your code goes here...
+
 end
