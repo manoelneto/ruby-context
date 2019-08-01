@@ -1,28 +1,64 @@
-# Context
+# Ruby Context
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/context`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem allows you to define and override global values inspired in [Reactjs Context api](https://reactjs.org/docs/context.html)
 
-TODO: Delete this and the text above, and describe your gem
+You can use this gem in any ruby project, including Rails.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'context'
+gem 'context', github: 'manoelneto/ruby-context'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+## Usage in Rails
 
-    $ gem install context
+imagine you want to override rails logger
 
-## Usage
+Create a config/initializers/app_logger.rb
 
-TODO: Write usage instructions here
+```ruby
+# Default value isn't necessary, but good
+
+APP_LOGGER = Context::Context.new(default_value: Rails.logger)
+```
+
+Image you have a worker called send_mail_worker.rb and you want that every call to Rails.logger should be override to a different log.
+
+```ruby
+class SendMailWorker
+    def do_work
+       email_logger = Logger.new
+       APP_LOGGER.with(email_logger) do
+           MailService.run!
+       end
+    end
+end
+```
+
+So now every calls of APP_LOGGER will not call Rails.logger anymore, but email_logger!
+
+```ruby
+class MailService
+    def self.run!
+       APP_LOGGER.info "runing mail service"
+       OtherClass.execute!
+    end
+end
+```
+
+```ruby
+class OtherClass
+    def self.execute!
+       APP_LOGGER.info "executing"
+    end
+end
+```
 
 ## Development
 
