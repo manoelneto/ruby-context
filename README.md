@@ -9,7 +9,7 @@ You can use this gem in any ruby project, including Rails.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'ruby-context'
+gem 'ruby_context'
 ```
 
 And then execute:
